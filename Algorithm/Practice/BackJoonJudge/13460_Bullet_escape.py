@@ -29,18 +29,17 @@ def Solution(arr,n,m):
         blue_stack.append(blue_start)
         blue_visited = list()
         blue_PastDirection = str()
+
+        Blue_is_in_hole = False
         while red_stack or blue_stack:
             if len(red_stack) > 0:
                 red_node = red_stack.pop()
             if len(blue_stack) > 0:
                 blue_node = blue_stack.pop()
             if maps[blue_node] == 'O':
-                return -1
+                blue_is_in_hole = True
             if maps[red_node] == 'O':
-                if count > 10:
-                    return -1
-                else:
-                    return count
+                break
             
 
             # Red_Bullet
@@ -90,7 +89,13 @@ def Solution(arr,n,m):
                 #Move Left
                 if col > 0:
                     blue_stack.append(row*m+col-1)    
-
+        if blue_is_in_hole == True:
+            return False
+        if count > 10:
+            return -1 
+        else:
+            return count
+               
     red_start = int()
     blue_start = int()
 
