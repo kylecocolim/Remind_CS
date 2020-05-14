@@ -12,12 +12,21 @@ class Node:
 
 
 def solution(words,queries):
-    def InsertNode(head,word):
+    def InsertNode(head,word,mode):
+
         curr_node = head
-        wordptr = 0
+        if mode == 'prefix':
+            wordptr = 0
+        elif mode == 'suffix':
+            wordptr= len(word)-1
         while curr_node:
-            if wordptr == len(word):
-                return 0
+            #Terminate
+            if mode =='prefix':
+                if wordptr == len(word):
+                    return 
+            elif mode == 'suffix':
+                if wordptr == 0:
+                    return 
             
             letter = word[wordptr]
             if letter in curr_node.children.keys():
@@ -30,11 +39,17 @@ def solution(words,queries):
                 curr_node = curr_node.children[letter]   
             
             #Increase Word Pointer
-            wordptr +=1
+            if mode=='prefix':
+                wordptr +=1
+            elif mode=='suffix':
+                wordptr -=1
     def SearchWord(head,query):
         curr_node = head 
         wordptr = 0
         while curr_node:
+            if wordptr < len(qurey) and len(curr_node.children.keys()) == 0:
+                #Not Found
+                return False
             if wordptr == len(query):
                 return
         
@@ -48,9 +63,14 @@ def solution(words,queries):
             else:
                 curr_node = curr_node.children[query[wordptr]] 
 
-    Trie = Node(key=None,children = {})
-    InsertNode(Trie,words[0])
-    SearchWord(Trie,words[0])
+    PrefixTree = Node(key=None,children = {})
+    SuffixTree = Node(key=None,children={})
+    for word in words:
+        InsertNode(PrefixTree,word,'prefix')
+
+    for word in words:
+        InsertNode(SuffixTree,word,'suffix')
+    #SearchWord(Trie,words[0])
 
 
 words = ["frodo", "front", "frost", "frozen", "frame", "kakao"]
