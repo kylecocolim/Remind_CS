@@ -1,0 +1,3 @@
+
+def solution(N,A):
+    
